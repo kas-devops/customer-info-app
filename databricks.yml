@@ -1,0 +1,18 @@
+bundle:
+  name: customer-info-app
+
+sync:
+  include:
+    - databricks-deploy/app/dist/**
+
+resources:
+  apps:
+    customer_info_app:
+      name: customer-info-app
+      source_code_path: ./databricks-deploy/app
+
+targets:
+  dev:
+    default: true
+    workspace:
+      host: https://dbc-dd580b89-4563.cloud.databricks.com
