@@ -1,10 +1,6 @@
 bundle:
   name: customer-info-app
 
-sync:
-  include:
-    - databricks-deploy/app/dist/**
-
 resources:
   apps:
     customer_info_app:
@@ -14,5 +10,13 @@ resources:
 targets:
   dev:
     default: true
+    workspace:
+      host: https://dbc-dd580b89-4563.cloud.databricks.com
+
+  qa:
+    workspace:
+      host: https://dbc-dd580b89-4563.cloud.databricks.com
+
+  prod:
     workspace:
       host: https://dbc-dd580b89-4563.cloud.databricks.com
