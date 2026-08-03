@@ -37,42 +37,108 @@
 #           name: customer-info-app-prod
 
 
-bundle:
-  name: customer-info-app
+name: Deploy to Databricks
 
-sync:
-  include:
-    - databricks-deploy/app/dist/**
+on:
+  push:
+    branches: [develop, release, main]
 
-resources:
-  apps:
-    customer_info_app:
-      name: customer-info-app
-      source_code_path: ./databricks-deploy/app
+jobs:
+  deploy-dev:
+    if: github.ref == 'refs/heads/develop'
+    runs-on: ubuntu-latest
+    environment: dev
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      - name: Build React frontend
+        run: |
+          cd frontend
+          npm ci
+          npm run build
+      - name: Copy build into backend
+        run: cp -r frontend/dist databricks-deploy/app/dist
+      - name: Setup Databricks CLI
+        uses: databricks/setup-cli@main
+      - name: Deploy bundle
+        env:
+          DATABRICKS_HOST: ${{ secrets.DATABRICKS_HOST }}
+          DATABRICKS_CLIENT_ID: ${{ secrets.DATABRICKS_CLIENT_ID }}
+          DATABRICKS_CLIENT_SECRET: ${{ secrets.DATABRICKS_CLIENT_SECRET }}
+        run: databricks bundle deploy -t dev --force-lock
+      - name: Deploy app
+        env:
+          DATABRICKS_HOST: ${{ secrets.DATABRICKS_HOST }}
+          DATABRICKS_CLIENT_ID: ${{ secrets.DATABRICKS_CLIENT_ID }}
+          DATABRICKS_CLIENT_SECRET: ${{ secrets.DATABRICKS_CLIENT_SECRET }}
+        run: databricks apps deploy customer-info-app --source-code-path /Workspace/Shared/customer-info-app/dev/files/databricks-deploy/app
 
-targets:
-  dev:
-    default: true
-    workspace:
-      host: https://dbc-dd580b89-4563.cloud.databricks.com
-      root_path: /Workspace/Shared/customer-info-app/dev
-    resources:
-      apps:
-        customer_info_app:
-          name: customer-info-app
-  qa:
-    workspace:
-      host: https://dbc-dd580b89-4563.cloud.databricks.com
-      root_path: /Workspace/Shared/customer-info-app/qa
-    resources:
-      apps:
-        customer_info_app:
-          name: customer-info-app-qa
-  prod:
-    workspace:
-      host: https://dbc-dd580b89-4563.cloud.databricks.com
-      root_path: /Workspace/Shared/customer-info-app/prod
-    resources:
-      apps:
-        customer_info_app:
-          name: customer-info-app-prod
+  deploy-qa:
+    if: github.ref == 'refs/heads/release'
+    runs-on: ubuntu-latest
+    environment: qa
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      - name: Build React frontend
+        run: |
+          cd frontend
+          npm ci
+          npm run build
+      - name: Copy build into backend
+        run: cp -r frontend/dist databricks-deploy/app/dist
+      - name: Setup Databricks CLI
+        uses: databricks/setup-cli@main
+      - name: Deploy bundle
+        env:
+          DATABRICKS_HOST: ${{ secrets.DATABRICKS_HOST }}
+          DATABRICKS_CLIENT_ID: ${{ secrets.DATABRICKS_CLIENT_ID }}
+          DATABRICKS_CLIENT_SECRET: ${{ secrets.DATABRICKS_CLIENT_SECRET }}
+        run: databricks bundle deploy -t qa --force-lock
+      - name: Deploy app
+        env:
+          DATABRICKS_HOST: ${{ secrets.DATABRICKS_HOST }}
+          DATABRICKS_CLIENT_ID: ${{ secrets.DATABRICKS_CLIENT_ID }}
+          DATABRICKS_CLIENT_SECRET: ${{ secrets.DATABRICKS_CLIENT_SECRET }}
+        run: databricks apps deploy customer-info-app-qa --source-code-path /Workspace/Shared/customer-info-app/qa/files/databricks-deploy/app
+
+  deploy-prod:
+    if: github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    environment: prod
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      - name: Build React frontend
+        run: |
+          cd frontend
+          npm ci
+          npm run build
+      - name: Copy build into backend
+        run: cp -r frontend/dist databricks-deploy/app/dist
+      - name: Setup Databricks CLI
+        uses: databricks/setup-cli@main
+      - name: Deploy bundle
+        env:
+          DATABRICKS_HOST: ${{ secrets.DATABRICKS_HOST }}
+          DATABRICKS_CLIENT_ID: ${{ secrets.DATABRICKS_CLIENT_ID }}
+          DATABRICKS_CLIENT_SECRET: ${{ secrets.DATABRICKS_CLIENT_SECRET }}
+        run: databricks bundle deploy -t prod --force-lock
+      - name: Deploy app
+        env:
+          DATABRICKS_HOST: ${{ secrets.DATABRICKS_HOST }}
+          DATABRICKS_CLIENT_ID: ${{ secrets.DATABRICKS_CLIENT_ID }}
+          DATABRICKS_CLIENT_SECRET: ${{ secrets.DATABRICKS_CLIENT_SECRET }}
+        run: databricks apps deploy customer-info-app-prod --source-code-path /Workspace/Shared/customer-info-app/prod/files/databricks-deploy/app
