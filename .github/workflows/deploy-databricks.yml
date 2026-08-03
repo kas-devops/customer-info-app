@@ -36,7 +36,7 @@ jobs:
           DATABRICKS_HOST: ${{ secrets.DATABRICKS_HOST }}
           DATABRICKS_CLIENT_ID: ${{ secrets.DATABRICKS_CLIENT_ID }}
           DATABRICKS_CLIENT_SECRET: ${{ secrets.DATABRICKS_CLIENT_SECRET }}
-        run: databricks apps deploy customer-info-app --source-code-path /Workspace/Users/kasthu.cloud@gmail.com/.bundle/customer-info-app/dev/files/databricks-deploy/app
+        run: databricks apps deploy customer-info-app --source-code-path /Workspace/Shared/customer-info-app/dev/files/databricks-deploy/app
 
   deploy-qa:
     if: github.ref == 'refs/heads/release'
@@ -69,7 +69,7 @@ jobs:
           DATABRICKS_HOST: ${{ secrets.DATABRICKS_HOST }}
           DATABRICKS_CLIENT_ID: ${{ secrets.DATABRICKS_CLIENT_ID }}
           DATABRICKS_CLIENT_SECRET: ${{ secrets.DATABRICKS_CLIENT_SECRET }}
-        run: databricks apps deploy customer-info-app-qa --source-code-path /Workspace/Users/kasthu.cloud@gmail.com/.bundle/customer-info-app/qa/files/databricks-deploy/app
+        run: databricks apps deploy customer-info-app-qa --source-code-path /Workspace/Shared/customer-info-app/qa/files/databricks-deploy/app
 
   deploy-prod:
     if: github.ref == 'refs/heads/main'
@@ -102,4 +102,4 @@ jobs:
           DATABRICKS_HOST: ${{ secrets.DATABRICKS_HOST }}
           DATABRICKS_CLIENT_ID: ${{ secrets.DATABRICKS_CLIENT_ID }}
           DATABRICKS_CLIENT_SECRET: ${{ secrets.DATABRICKS_CLIENT_SECRET }}
-        run: databricks apps deploy customer-info-app-prod --source-code-path /Workspace/Users/kasthu.cloud@gmail.com/.bundle/customer-info-app/prod/files/databricks-deploy/app
+        run: databricks apps deploy customer-info-app-prod --source-code-path /Workspace/Shared/customer-info-app/prod/files/databricks-deploy/app
