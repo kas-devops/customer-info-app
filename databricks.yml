@@ -1,5 +1,48 @@
+# bundle:
+#   name: customer-info-app
+
+# resources:
+#   apps:
+#     customer_info_app:
+#       name: customer-info-app
+#       source_code_path: ./databricks-deploy/app
+
+# targets:
+#   dev:
+#     default: true
+#     workspace:
+#       host: https://dbc-dd580b89-4563.cloud.databricks.com
+#       root_path: /Workspace/Shared/customer-info-app/dev
+#     resources:
+#       apps:
+#         customer_info_app:
+#           name: customer-info-app
+
+#   qa:
+#     workspace:
+#       host: https://dbc-dd580b89-4563.cloud.databricks.com
+#       root_path: /Workspace/Shared/customer-info-app/qa
+#     resources:
+#       apps:
+#         customer_info_app:
+#           name: customer-info-app-qa
+
+#   prod:
+#     workspace:
+#       host: https://dbc-dd580b89-4563.cloud.databricks.com
+#       root_path: /Workspace/Shared/customer-info-app/prod
+#     resources:
+#       apps:
+#         customer_info_app:
+#           name: customer-info-app-prod
+
+
 bundle:
   name: customer-info-app
+
+sync:
+  include:
+    - databricks-deploy/app/dist/**
 
 resources:
   apps:
@@ -17,7 +60,6 @@ targets:
       apps:
         customer_info_app:
           name: customer-info-app
-
   qa:
     workspace:
       host: https://dbc-dd580b89-4563.cloud.databricks.com
@@ -26,7 +68,6 @@ targets:
       apps:
         customer_info_app:
           name: customer-info-app-qa
-
   prod:
     workspace:
       host: https://dbc-dd580b89-4563.cloud.databricks.com
