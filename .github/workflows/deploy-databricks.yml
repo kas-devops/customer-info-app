@@ -27,13 +27,15 @@ jobs:
         uses: databricks/setup-cli@main
       - name: Deploy bundle
         env:
-          DATABRICKS_HOST: ${{ secrets.DEV_DATABRICKS_HOST }}
-          DATABRICKS_TOKEN: ${{ secrets.DEV_DATABRICKS_TOKEN }}
+          DATABRICKS_HOST: ${{ secrets.DATABRICKS_HOST }}
+          DATABRICKS_CLIENT_ID: ${{ secrets.DATABRICKS_CLIENT_ID }}
+          DATABRICKS_CLIENT_SECRET: ${{ secrets.DATABRICKS_CLIENT_SECRET }}
         run: databricks bundle deploy -t dev
       - name: Deploy app
         env:
-          DATABRICKS_HOST: ${{ secrets.DEV_DATABRICKS_HOST }}
-          DATABRICKS_TOKEN: ${{ secrets.DEV_DATABRICKS_TOKEN }}
+          DATABRICKS_HOST: ${{ secrets.DATABRICKS_HOST }}
+          DATABRICKS_CLIENT_ID: ${{ secrets.DATABRICKS_CLIENT_ID }}
+          DATABRICKS_CLIENT_SECRET: ${{ secrets.DATABRICKS_CLIENT_SECRET }}
         run: databricks apps deploy customer-info-app --source-code-path /Workspace/Users/kasthu.cloud@gmail.com/.bundle/customer-info-app/dev/files/databricks-deploy/app
 
   deploy-qa:
@@ -58,13 +60,15 @@ jobs:
         uses: databricks/setup-cli@main
       - name: Deploy bundle
         env:
-          DATABRICKS_HOST: ${{ secrets.QA_DATABRICKS_HOST }}
-          DATABRICKS_TOKEN: ${{ secrets.QA_DATABRICKS_TOKEN }}
+          DATABRICKS_HOST: ${{ secrets.DATABRICKS_HOST }}
+          DATABRICKS_CLIENT_ID: ${{ secrets.DATABRICKS_CLIENT_ID }}
+          DATABRICKS_CLIENT_SECRET: ${{ secrets.DATABRICKS_CLIENT_SECRET }}
         run: databricks bundle deploy -t qa
       - name: Deploy app
         env:
-          DATABRICKS_HOST: ${{ secrets.QA_DATABRICKS_HOST }}
-          DATABRICKS_TOKEN: ${{ secrets.QA_DATABRICKS_TOKEN }}
+          DATABRICKS_HOST: ${{ secrets.DATABRICKS_HOST }}
+          DATABRICKS_CLIENT_ID: ${{ secrets.DATABRICKS_CLIENT_ID }}
+          DATABRICKS_CLIENT_SECRET: ${{ secrets.DATABRICKS_CLIENT_SECRET }}
         run: databricks apps deploy customer-info-app-qa --source-code-path /Workspace/Users/kasthu.cloud@gmail.com/.bundle/customer-info-app/qa/files/databricks-deploy/app
 
   deploy-prod:
@@ -89,11 +93,13 @@ jobs:
         uses: databricks/setup-cli@main
       - name: Deploy bundle
         env:
-          DATABRICKS_HOST: ${{ secrets.PROD_DATABRICKS_HOST }}
-          DATABRICKS_TOKEN: ${{ secrets.PROD_DATABRICKS_TOKEN }}
+          DATABRICKS_HOST: ${{ secrets.DATABRICKS_HOST }}
+          DATABRICKS_CLIENT_ID: ${{ secrets.DATABRICKS_CLIENT_ID }}
+          DATABRICKS_CLIENT_SECRET: ${{ secrets.DATABRICKS_CLIENT_SECRET }}
         run: databricks bundle deploy -t prod
       - name: Deploy app
         env:
-          DATABRICKS_HOST: ${{ secrets.PROD_DATABRICKS_HOST }}
-          DATABRICKS_TOKEN: ${{ secrets.PROD_DATABRICKS_TOKEN }}
+          DATABRICKS_HOST: ${{ secrets.DATABRICKS_HOST }}
+          DATABRICKS_CLIENT_ID: ${{ secrets.DATABRICKS_CLIENT_ID }}
+          DATABRICKS_CLIENT_SECRET: ${{ secrets.DATABRICKS_CLIENT_SECRET }}
         run: databricks apps deploy customer-info-app-prod --source-code-path /Workspace/Users/kasthu.cloud@gmail.com/.bundle/customer-info-app/prod/files/databricks-deploy/app
