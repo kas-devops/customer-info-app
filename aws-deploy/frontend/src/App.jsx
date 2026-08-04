@@ -6,10 +6,10 @@ function App() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    fetch('/api/customers')
+    fetch(import.meta.env.VITE_DATA_URL)
       .then(res => res.json())
       .then(data => {
-        setCustomers(data.customers || []);
+        setCustomers(Array.isArray(data) ? data : []);
         setLoading(false);
       })
       .catch(() => setLoading(false));
@@ -19,7 +19,7 @@ function App() {
     <div className="page">
       <div className="card">
         <div className="header">
-          <h1>Customer Information</h1>
+        <h1>Customer Information - Live Demo Update</h1>
           <span className="badge">{customers.length} Records</span>
         </div>
 
