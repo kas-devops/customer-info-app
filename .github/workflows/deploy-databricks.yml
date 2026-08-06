@@ -12,31 +12,47 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
+
       - name: Setup Node
         uses: actions/setup-node@v4
         with:
           node-version: '20'
+
       - name: Build React frontend
         run: |
           cd frontend
           npm ci
           npm run build
+
       - name: Copy build into backend
         run: cp -r frontend/dist databricks-deploy/app/dist
+
       - name: Setup Databricks CLI
         uses: databricks/setup-cli@main
+
       - name: Deploy bundle
         env:
           DATABRICKS_HOST: ${{ secrets.DEV_DATABRICKS_HOST }}
           DATABRICKS_CLIENT_ID: ${{ secrets.DEV_DATABRICKS_CLIENT_ID }}
           DATABRICKS_CLIENT_SECRET: ${{ secrets.DEV_DATABRICKS_CLIENT_SECRET }}
         run: databricks bundle deploy -t dev --force-lock
+
+      - name: Ensure app is running
+        env:
+          DATABRICKS_HOST: ${{ secrets.DEV_DATABRICKS_HOST }}
+          DATABRICKS_CLIENT_ID: ${{ secrets.DEV_DATABRICKS_CLIENT_ID }}
+          DATABRICKS_CLIENT_SECRET: ${{ secrets.DEV_DATABRICKS_CLIENT_SECRET }}
+        run: databricks apps start customer-info-app || echo "Already running or start not required"
+
       - name: Deploy app
         env:
           DATABRICKS_HOST: ${{ secrets.DEV_DATABRICKS_HOST }}
           DATABRICKS_CLIENT_ID: ${{ secrets.DEV_DATABRICKS_CLIENT_ID }}
           DATABRICKS_CLIENT_SECRET: ${{ secrets.DEV_DATABRICKS_CLIENT_SECRET }}
-        run: databricks apps deploy customer-info-app --source-code-path "/Workspace/Users/customer-info-app-dev/customer-info-app/dev/files/databricks-deploy/app"
+        run: |
+          CURRENT_USER=$(databricks current-user me --output json | python3 -c "import sys,json; print(json.load(sys.stdin)['userName'])")
+          echo "Deploying as: $CURRENT_USER"
+          databricks apps deploy customer-info-app --source-code-path "/Workspace/Users/$CURRENT_USER/customer-info-app/dev/files/databricks-deploy/app"
 
   deploy-qa:
     if: github.ref == 'refs/heads/release'
@@ -45,31 +61,47 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
+
       - name: Setup Node
         uses: actions/setup-node@v4
         with:
           node-version: '20'
+
       - name: Build React frontend
         run: |
           cd frontend
           npm ci
           npm run build
+
       - name: Copy build into backend
         run: cp -r frontend/dist databricks-deploy/app/dist
+
       - name: Setup Databricks CLI
         uses: databricks/setup-cli@main
+
       - name: Deploy bundle
         env:
           DATABRICKS_HOST: ${{ secrets.QA_DATABRICKS_HOST }}
           DATABRICKS_CLIENT_ID: ${{ secrets.QA_DATABRICKS_CLIENT_ID }}
           DATABRICKS_CLIENT_SECRET: ${{ secrets.QA_DATABRICKS_CLIENT_SECRET }}
         run: databricks bundle deploy -t qa --force-lock
+
+      - name: Ensure app is running
+        env:
+          DATABRICKS_HOST: ${{ secrets.QA_DATABRICKS_HOST }}
+          DATABRICKS_CLIENT_ID: ${{ secrets.QA_DATABRICKS_CLIENT_ID }}
+          DATABRICKS_CLIENT_SECRET: ${{ secrets.QA_DATABRICKS_CLIENT_SECRET }}
+        run: databricks apps start customer-info-app-qa || echo "Already running or start not required"
+
       - name: Deploy app
         env:
           DATABRICKS_HOST: ${{ secrets.QA_DATABRICKS_HOST }}
           DATABRICKS_CLIENT_ID: ${{ secrets.QA_DATABRICKS_CLIENT_ID }}
           DATABRICKS_CLIENT_SECRET: ${{ secrets.QA_DATABRICKS_CLIENT_SECRET }}
-        run: databricks apps deploy customer-info-app-qa --source-code-path "/Workspace/Users/app-37yo8l customer-info-app-qa/customer-info-app/qa/files/databricks-deploy/app"
+        run: |
+          CURRENT_USER=$(databricks current-user me --output json | python3 -c "import sys,json; print(json.load(sys.stdin)['userName'])")
+          echo "Deploying as: $CURRENT_USER"
+          databricks apps deploy customer-info-app-qa --source-code-path "/Workspace/Users/$CURRENT_USER/customer-info-app/qa/files/databricks-deploy/app"
 
   deploy-prod:
     if: github.ref == 'refs/heads/main'
@@ -78,28 +110,44 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
+
       - name: Setup Node
         uses: actions/setup-node@v4
         with:
           node-version: '20'
+
       - name: Build React frontend
         run: |
           cd frontend
           npm ci
           npm run build
+
       - name: Copy build into backend
         run: cp -r frontend/dist databricks-deploy/app/dist
+
       - name: Setup Databricks CLI
         uses: databricks/setup-cli@main
+
       - name: Deploy bundle
         env:
           DATABRICKS_HOST: ${{ secrets.PROD_DATABRICKS_HOST }}
           DATABRICKS_CLIENT_ID: ${{ secrets.PROD_DATABRICKS_CLIENT_ID }}
           DATABRICKS_CLIENT_SECRET: ${{ secrets.PROD_DATABRICKS_CLIENT_SECRET }}
         run: databricks bundle deploy -t prod --force-lock
+
+      - name: Ensure app is running
+        env:
+          DATABRICKS_HOST: ${{ secrets.PROD_DATABRICKS_HOST }}
+          DATABRICKS_CLIENT_ID: ${{ secrets.PROD_DATABRICKS_CLIENT_ID }}
+          DATABRICKS_CLIENT_SECRET: ${{ secrets.PROD_DATABRICKS_CLIENT_SECRET }}
+        run: databricks apps start customer-info-app-prod || echo "Already running or start not required"
+
       - name: Deploy app
         env:
           DATABRICKS_HOST: ${{ secrets.PROD_DATABRICKS_HOST }}
           DATABRICKS_CLIENT_ID: ${{ secrets.PROD_DATABRICKS_CLIENT_ID }}
           DATABRICKS_CLIENT_SECRET: ${{ secrets.PROD_DATABRICKS_CLIENT_SECRET }}
-        run: databricks apps deploy customer-info-app-prod --source-code-path "/Workspace/Users/customer-info-app-prod/customer-info-app/prod/files/databricks-deploy/app"
+        run: |
+          CURRENT_USER=$(databricks current-user me --output json | python3 -c "import sys,json; print(json.load(sys.stdin)['userName'])")
+          echo "Deploying as: $CURRENT_USER"
+          databricks apps deploy customer-info-app-prod --source-code-path "/Workspace/Users/$CURRENT_USER/customer-info-app/prod/files/databricks-deploy/app"

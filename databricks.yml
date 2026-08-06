@@ -16,7 +16,7 @@ targets:
     default: true
     workspace:
       host: https://dbc-dd580b89-4563.cloud.databricks.com
-      root_path: /Workspace/Users/customer-info-app-dev/customer-info-app/dev
+      root_path: /Workspace/Users/${workspace.current_user.userName}/customer-info-app/dev
     resources:
       apps:
         customer_info_app:
@@ -24,8 +24,8 @@ targets:
 
   qa:
     workspace:
-      host: https://dbc-b27693f3-0f68.cloud.databricks.com
-      root_path: /Workspace/Users/app-37yo8l customer-info-app-qa/customer-info-app/qa
+      host: https://dbc-dd580b89-4563.cloud.databricks.com
+      root_path: /Workspace/Users/${workspace.current_user.userName}/customer-info-app/qa
     resources:
       apps:
         customer_info_app:
@@ -34,7 +34,7 @@ targets:
   prod:
     workspace:
       host: https://dbc-dd580b89-4563.cloud.databricks.com
-      root_path: /Workspace/Users/customer-info-app-prod/customer-info-app/prod
+      root_path: /Workspace/Users/${workspace.current_user.userName}/customer-info-app/prod
     resources:
       apps:
         customer_info_app:
