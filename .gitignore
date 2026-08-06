@@ -12,3 +12,8 @@ dist1-config.json
 dist1-disabled.json
 dist2-config.json
 dist2-disabled.json
+
+pipeline-def.json
+pipeline-def-qa.json
+pipeline-permissions.json
+trust-policy.json
