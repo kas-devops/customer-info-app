@@ -52,7 +52,7 @@ jobs:
         run: |
           CURRENT_USER=$(databricks current-user me --output json | python3 -c "import sys,json; print(json.load(sys.stdin)['userName'])")
           echo "Deploying as: $CURRENT_USER"
-          databricks apps deploy customer-info-app --source-code-path "/Workspace/Users/$CURRENT_USER/customer-info-app/dev/files/databricks-deploy/app"
+          databricks apps deploy customer-info-app --source-code-path "/Workspace/Users/$CURRENT_USER/customer-info-app/dev/databricks-deploy/app"
 
   deploy-qa:
     if: github.ref == 'refs/heads/release'
