@@ -1,0 +1,16 @@
+version: 0.2
+phases:
+  install:
+    runtime-versions:
+      nodejs: 20
+    commands:
+      - cd aws-deploy/frontend
+      - npm ci
+  build:
+    commands:
+      - echo "VITE_DATA_URL=$VITE_DATA_URL" > .env.production
+      - npm run build
+artifacts:
+  base-directory: aws-deploy/frontend/dist
+  files:
+    - '**/*'
