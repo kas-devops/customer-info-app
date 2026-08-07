@@ -11,7 +11,7 @@ function App() {
 
   return (
     <div style={{ padding: '2rem', fontFamily: 'sans-serif' }}>
-      <h1>Customer Information</h1>
+      <h1>Customer Information Portal</h1>
       <table border="1" cellPadding="8" style={{ borderCollapse: 'collapse' }}>
         <thead>
           <tr>
