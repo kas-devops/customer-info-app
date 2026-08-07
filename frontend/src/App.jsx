@@ -15,117 +15,39 @@ function App() {
   }, []);
 
   return (
-    <div className="page">
-      <style>{`
-        * { box-sizing: border-box; }
-        .page {
-          min-height: 100vh;
-          background: linear-gradient(135deg, #0f172a 0%, #1e3a5f 50%, #0d9488 100%);
-          font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-          padding: 48px 20px;
-          display: flex;
-          justify-content: center;
-        }
-        .container {
-          width: 100%;
-          max-width: 900px;
-          background: #ffffff;
-          border-radius: 16px;
-          box-shadow: 0 20px 40px rgba(0,0,0,0.25);
-          overflow: hidden;
-        }
-        .header {
-          background: linear-gradient(135deg, #0d9488 0%, #0891b2 100%);
-          padding: 32px 40px;
-          color: #ffffff;
-        }
-        .title { margin: 0; font-size: 26px; font-weight: 700; }
-        .subtitle { margin: 6px 0 0; font-size: 14px; opacity: 0.9; }
-        .badge {
-          display: inline-block;
-          margin-top: 10px;
-          background: rgba(255,255,255,0.2);
-          padding: 4px 12px;
-          border-radius: 999px;
-          font-size: 12px;
-          font-weight: 600;
-        }
-        .loading { padding: 60px 40px; text-align: center; color: #64748b; }
-        .table-wrapper { padding: 24px 40px 40px; overflow-x: auto; }
-        table { width: 100%; border-collapse: collapse; font-size: 14px; }
-        th {
-          text-align: left;
-          padding: 12px 16px;
-          background: #f0fdfa;
-          color: #0f766e;
-          font-weight: 600;
-          border-bottom: 2px solid #99f6e4;
-          white-space: nowrap;
-        }
-        td {
-          padding: 12px 16px;
-          border-bottom: 1px solid #f1f5f9;
-          color: #1e293b;
-        }
-        tr:hover td { background: #f8fafc; }
-
-        @media (max-width: 640px) {
-          .page { padding: 20px 12px; }
-          .header { padding: 24px 20px; }
-          .title { font-size: 20px; }
-          .table-wrapper { padding: 12px; }
-          table, thead, tbody, tr, th, td { display: block; }
-          thead { display: none; }
-          tr {
-            margin-bottom: 14px;
-            border: 1px solid #e2e8f0;
-            border-radius: 10px;
-            overflow: hidden;
-          }
-          td {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 10px 14px;
-            border-bottom: 1px solid #f1f5f9;
-          }
-          td:last-child { border-bottom: none; }
-          td::before {
-            content: attr(data-label);
-            font-weight: 600;
-            color: #0d9488;
-            margin-right: 12px;
-          }
-        }
-      `}</style>
-
-      <div className="container">
-        <header className="header">
-          <h1 className="title">Customer Information Portal</h1>
-          <p className="subtitle">Live customer records</p>
-          <span className="badge">{customers.length} customers</span>
+    <div style={styles.page}>
+      <div style={styles.container}>
+        <header style={styles.header}>
+          <h1 style={styles.title}>Customer Information Portal</h1>
+          <p style={styles.subtitle}>{customers.length} customer records</p>
         </header>
 
         {loading ? (
-          <p className="loading">Loading customer data...</p>
+          <p style={styles.loading}>Loading customer data...</p>
         ) : (
-          <div className="table-wrapper">
-            <table>
+          <div style={styles.tableWrapper}>
+            <table style={styles.table}>
               <thead>
                 <tr>
-                  <th>Name</th>
-                  <th>Email</th>
-                  <th>Phone</th>
-                  <th>City</th>
+                  <th style={styles.th}>Name</th>
+                  <th style={styles.th}>Email</th>
+                  <th style={styles.th}>Phone</th>
+                  <th style={styles.th}>City</th>
                 </tr>
               </thead>
               <tbody>
-                {customers.map((c) => (
-                  <tr key={c.customer_id}>
-                    <td data-label="Name">{c.name}</td>
-                    <td data-label="Email">{c.email}</td>
-                    <td data-label="Phone">{c.phone}</td>
-                    <td data-label="City">{c.city}</td>
+                {customers.map((c, i) => (
+                  <tr
+                    key={c.customer_id}
+                    style={{
+                      ...styles.tr,
+                      backgroundColor: i % 2 === 0 ? '#ffffff' : '#f9fafb',
+                    }}
+                  >
+                    <td style={styles.td}>{c.name}</td>
+                    <td style={styles.td}>{c.email}</td>
+                    <td style={styles.td}>{c.phone}</td>
+                    <td style={styles.td}>{c.city}</td>
                   </tr>
                 ))}
               </tbody>
@@ -136,5 +58,67 @@ function App() {
     </div>
   );
 }
+
+const styles = {
+  page: {
+    minHeight: '100vh',
+    background: 'linear-gradient(135deg, #eef2ff 0%, #f5f3ff 100%)',
+    fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif',
+    padding: '48px 20px',
+  },
+  container: {
+    maxWidth: '900px',
+    margin: '0 auto',
+    background: '#ffffff',
+    borderRadius: '16px',
+    boxShadow: '0 10px 30px rgba(0,0,0,0.08)',
+    overflow: 'hidden',
+  },
+  header: {
+    background: 'linear-gradient(135deg, #4f46e5 0%, #7c3aed 100%)',
+    padding: '32px 40px',
+    color: '#ffffff',
+  },
+  title: {
+    margin: 0,
+    fontSize: '26px',
+    fontWeight: 700,
+  },
+  subtitle: {
+    margin: '6px 0 0',
+    fontSize: '14px',
+    opacity: 0.85,
+  },
+  loading: {
+    padding: '40px',
+    textAlign: 'center',
+    color: '#666',
+  },
+  tableWrapper: {
+    padding: '24px 40px 40px',
+    overflowX: 'auto',
+  },
+  table: {
+    width: '100%',
+    borderCollapse: 'collapse',
+    fontSize: '14px',
+  },
+  th: {
+    textAlign: 'left',
+    padding: '12px 16px',
+    background: '#f3f4f6',
+    color: '#374151',
+    fontWeight: 600,
+    borderBottom: '2px solid #e5e7eb',
+  },
+  tr: {
+    transition: 'background-color 0.15s ease',
+  },
+  td: {
+    padding: '12px 16px',
+    borderBottom: '1px solid #f0f0f0',
+    color: '#1f2937',
+  },
+};
 
 export default App;
