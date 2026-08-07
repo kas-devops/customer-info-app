@@ -19,7 +19,7 @@ function App() {
     <div className="page">
       <div className="card">
         <div className="header">
-        <h1>Customer Information Portal - v2</h1>
+        <h1>Customer Information Portal - v3</h1>
           <span className="badge">{customers.length} Records</span>
         </div>
 
