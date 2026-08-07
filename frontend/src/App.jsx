@@ -15,46 +15,28 @@ function App() {
   }, []);
 
   return (
-    <div style={styles.page}>
-      <div style={styles.container}>
-        <header style={styles.header}>
-          <h1 style={styles.title}>Customer Information Portal</h1>
-          <p style={styles.subtitle}>{customers.length} customer records</p>
-        </header>
-
-        {loading ? (
-          <p style={styles.loading}>Loading customer data...</p>
-        ) : (
-          <div style={styles.tableWrapper}>
-            <table style={styles.table}>
-              <thead>
-                <tr>
-                  <th style={styles.th}>Name</th>
-                  <th style={styles.th}>Email</th>
-                  <th style={styles.th}>Phone</th>
-                  <th style={styles.th}>City</th>
-                </tr>
-              </thead>
-              <tbody>
-                {customers.map((c, i) => (
-                  <tr
-                    key={c.customer_id}
-                    style={{
-                      ...styles.tr,
-                      backgroundColor: i % 2 === 0 ? '#ffffff' : '#f9fafb',
-                    }}
-                  >
-                    <td style={styles.td}>{c.name}</td>
-                    <td style={styles.td}>{c.email}</td>
-                    <td style={styles.td}>{c.phone}</td>
-                    <td style={styles.td}>{c.city}</td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
-        )}
-      </div>
+    <div style={{ padding: '2rem', fontFamily: 'sans-serif' }}>
+      <h1>Customer Information Portal</h1>
+      <table border="1" cellPadding="8" style={{ borderCollapse: 'collapse' }}>
+        <thead>
+          <tr>
+            <th>Name</th>
+            <th>Email</th>
+            <th>Phone</th>
+            <th>City</th>
+          </tr>
+        </thead>
+        <tbody>
+          {customers.map(c => (
+            <tr key={c.customer_id}>
+              <td>{c.name}</td>
+              <td>{c.email}</td>
+              <td>{c.phone}</td>
+              <td>{c.city}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
     </div>
   );
 }
