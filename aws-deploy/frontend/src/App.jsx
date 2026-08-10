@@ -1,15 +1,14 @@
 import { useState, useEffect } from 'react';
-import './App.css';
 
 function App() {
   const [customers, setCustomers] = useState([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    fetch(import.meta.env.VITE_DATA_URL)
+    fetch('/api/customers')
       .then(res => res.json())
       .then(data => {
-        setCustomers(Array.isArray(data) ? data : []);
+        setCustomers(data.customers || []);
         setLoading(false);
       })
       .catch(() => setLoading(false));
@@ -26,26 +25,28 @@ function App() {
         {loading ? (
           <p className="loading">Loading customer data...</p>
         ) : (
-          <table>
-            <thead>
-              <tr>
-                <th>Name</th>
-                <th>Email</th>
-                <th>Phone</th>
-                <th>City</th>
-              </tr>
-            </thead>
-            <tbody>
-              {customers.map(c => (
-                <tr key={c.customer_id}>
-                  <td className="name-cell">{c.name}</td>
-                  <td>{c.email}</td>
-                  <td>{c.phone}</td>
-                  <td><span className="city-tag">{c.city}</span></td>
+          <div className="table-wrapper">
+            <table>
+              <thead>
+                <tr>
+                  <th>Name</th>
+                  <th>Email</th>
+                  <th>Phone</th>
+                  <th>City</th>
                 </tr>
-              ))}
-            </tbody>
-          </table>
+              </thead>
+              <tbody>
+                {customers.map((c) => (
+                  <tr key={c.customer_id}>
+                    <td data-label="Name">{c.name}</td>
+                    <td data-label="Email">{c.email}</td>
+                    <td data-label="Phone">{c.phone}</td>
+                    <td data-label="City">{c.city}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
         )}
       </div>
     </div>

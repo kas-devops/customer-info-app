@@ -1,0 +1,74 @@
+{
+  "pipeline": {
+    "name": "customer-info-app-prod-pipeline",
+    "roleArn": "arn:aws:iam::738983259880:role/customer-info-app-prod-pipeline-role",
+    "artifactStore": {
+      "type": "S3",
+      "location": "customer-info-app-prod-738983259880"
+    },
+    "stages": [
+      {
+        "name": "Source",
+        "actions": [
+          {
+            "name": "Source",
+            "actionTypeId": {
+              "category": "Source",
+              "owner": "AWS",
+              "provider": "CodeStarSourceConnection",
+              "version": "1"
+            },
+            "configuration": {
+              "ConnectionArn": "arn:aws:codeconnections:us-east-1:738983259880:connection/5223bd62-d889-445a-ba59-847820c3e8fc",
+              "FullRepositoryId": "kas-devops/customer-info-app",
+              "BranchName": "main"
+            },
+            "outputArtifacts": [
+              { "name": "SourceOutput" }
+            ]
+          }
+        ]
+      },
+      {
+        "name": "Build",
+        "actions": [
+          {
+            "name": "Build",
+            "actionTypeId": {
+              "category": "Build",
+              "owner": "AWS",
+              "provider": "CodeBuild",
+              "version": "1"
+            },
+            "configuration": {
+              "ProjectName": "customer-info-app-prod-prod-build"
+            },
+            "inputArtifacts": [
+              { "name": "SourceOutput" }
+            ],
+            "outputArtifacts": [
+              { "name": "BuildOutput" }
+            ]
+          }
+        ]
+      },
+      {
+        "name": "Approval",
+        "actions": [
+          {
+            "name": "ManualApproval",
+            "actionTypeId": {
+              "category": "Approval",
+              "owner": "AWS",
+              "provider": "Manual",
+              "version": "1"
+            },
+            "configuration": {
+              "CustomData": "Approve to deploy customer-info-app to PRODUCTION"
+            }
+          }
+        ]
+      }
+    ]
+  }
+}

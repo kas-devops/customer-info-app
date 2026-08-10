@@ -17,3 +17,5 @@ pipeline-def.json
 pipeline-def-qa.json
 pipeline-permissions.json
 trust-policy.json
+aws-deploy/frontend/build-log.txt
+aws-deploy/frontend/.env.production
