@@ -8,7 +8,7 @@ function App() {
     fetch(import.meta.env.VITE_DATA_URL)
       .then(res => res.json())
       .then(data => {
-        setCustomers(data.customers || []);
+        setCustomers(Array.isArray(data) ? data : []);
         setLoading(false);
       })
       .catch(() => setLoading(false));
