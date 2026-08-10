@@ -5,7 +5,7 @@ function App() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    fetch(import.meta.env.VITE_DATA_URL || '/api/customers')
+    fetch('/api/customers')
       .then(res => res.json())
       .then(data => {
         setCustomers(data.customers || []);
