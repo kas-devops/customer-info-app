@@ -3,6 +3,11 @@ name: Deploy to Databricks
 on:
   push:
     branches: [develop, release, main]
+    paths:
+      - 'frontend/**'
+      - 'databricks-deploy/**'
+      - 'databricks.yml'
+      - '.github/workflows/deploy-databricks.yml'
 
 jobs:
   deploy-dev:
