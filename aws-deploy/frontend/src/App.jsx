@@ -5,10 +5,10 @@ function App() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    fetch('/api/customers')
+    fetch(import.meta.env.VITE_DATA_URL)
       .then(res => res.json())
       .then(data => {
-        setCustomers(data.customers || []);
+        setCustomers(Array.isArray(data) ? data : []);
         setLoading(false);
       })
       .catch(() => setLoading(false));
@@ -101,7 +101,7 @@ function App() {
 
       <div className="container">
         <header className="header">
-          <h1 className="title">Customer Information Portal</h1>
+          <h1 className="title">Customer Information Portal-AWS</h1>
           <p className="subtitle">Live customer records</p>
           <span className="badge">{customers.length} customers</span>
         </header>
