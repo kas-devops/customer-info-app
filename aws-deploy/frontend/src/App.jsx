@@ -35,7 +35,7 @@ function App() {
           overflow: hidden;
         }
         .header {
-          background: linear-gradient(135deg, #45c8d9 0%, #0891b2 100%);
+          background: linear-gradient(135deg, #0d9488 0%, #0891b2 100%);
           padding: 32px 40px;
           color: #ffffff;
         }
