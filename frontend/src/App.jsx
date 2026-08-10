@@ -57,7 +57,7 @@ function App() {
           text-align: left;
           padding: 12px 16px;
           background: #f0fdfa;
-          color: #1cc2db;
+          color: #0f766e;
           font-weight: 600;
           border-bottom: 2px solid #99f6e4;
           white-space: nowrap;
