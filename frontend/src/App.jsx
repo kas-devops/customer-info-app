@@ -101,7 +101,7 @@ function App() {
 
       <div className="container">
         <header className="header">
-          <h1 className="title">Customer Information Portal</h1>
+          <h1 className="title">Customer Information Portals</h1>
           <p className="subtitle">Live customer records</p>
           <span className="badge">{customers.length} customers</span>
         </header>
